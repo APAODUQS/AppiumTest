@@ -38,20 +38,14 @@ public class ioSampleTest {
 
     @Test
     public void firstTest() {
-        try {
-            sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
 //        driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
-        driver.findElement(By.id("com.easysolutions.sdk.test:id/registroURL")).click();
-        try {
-            sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
+
     }
 
     @AfterMethod
