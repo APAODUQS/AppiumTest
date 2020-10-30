@@ -1,3 +1,7 @@
+import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import entities.URLCodeResponse;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
@@ -11,6 +15,7 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
 
@@ -18,6 +23,7 @@ public class ioSampleTest {
 
     public AndroidDriver<MobileElement> driver;
     public WebDriverWait wait;
+    private final Gson gson = new Gson();
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
@@ -51,13 +57,33 @@ public class ioSampleTest {
 //        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast[@text='400']")).getText();
         System.out.println("The response is: " + response);
         Assert.assertEquals(response,"500", "Bad Response: " + response);
-
-        try {
-            sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
+
+    @Test
+    public void secondTest() throws UnirestException {
+        String URL = "http://192.168.243.189:8081/mobile-auth-service/api/v1/clients/testing/activation/codes";
+        HashMap<String, String> header = new HashMap<String, String>();
+        header.put("Content-Type", "application/json");
+        String body = "{\"notify\": false }";
+        HttpResponse responseURLCode = APIrest.postRequest(URL, header, body);
+        URLCodeResponse urlCode = gson.fromJson(responseURLCode.getBody().toString(), URLCodeResponse.class);
+        String code = urlCode.details.registrationUrl;
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+//        driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys(code);
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("android:id/button1"))).click();
+        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
+        System.out.println("The response is: " + response);
+        Assert.assertEquals(response,"200", "Bad Response: " + response);
+    }
+
 
     @AfterMethod
     public void teardown() {
