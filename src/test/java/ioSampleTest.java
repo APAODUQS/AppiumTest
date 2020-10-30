@@ -45,7 +45,13 @@ public class ioSampleTest {
                 (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys("HOLA");
+        try {
+            sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterMethod
