@@ -17,9 +17,6 @@ public class ioSampleTest {
 
     public AndroidDriver<MobileElement> driver;
     public WebDriverWait wait;
-    // http://appium.io/docs/en/writing-running-appium/server-args/   -> --dc, --default-capabilities
-    // http://appium.io/docs/en/writing-running-appium/default-capabilities-arg/  -> --default-capabilities [ '{"app": "myapp.app", "deviceName": "iPhone Simulator"}' | /path/to/caps.json ]
-    // --platform-name --platform-version --device-name -U, --udid	 --app-pkg --app-activity --app
 
     @BeforeMethod
     public void setup () throws MalformedURLException {
@@ -47,6 +44,9 @@ public class ioSampleTest {
                 (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys("HOLA");
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("android:id/button1"))).click();
+
         try {
             sleep(5000);
         } catch (InterruptedException e) {
