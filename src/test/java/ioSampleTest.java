@@ -23,6 +23,7 @@ public class ioSampleTest {
 
     public AndroidDriver<MobileElement> driver;
     public WebDriverWait wait;
+    private final String user = "testing";
     private final Gson gson = new Gson();
 
     @BeforeMethod
@@ -56,18 +57,19 @@ public class ioSampleTest {
         String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
 //        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast[@text='400']")).getText();
         System.out.println("The response is: " + response);
-        Assert.assertEquals(response,"500", "Bad Response: " + response);
+        Assert.assertEquals(response, "500", "Bad Response: " + response);
     }
 
     @Test
     public void secondTest() throws UnirestException {
-        String URL = "http://192.168.243.189:8081/mobile-auth-service/api/v1/clients/testing/activation/codes";
+        String URL = "http://192.168.243.189:8081/mobile-auth-service/api/v1/clients/" + user + "/activation/codes";
         HashMap<String, String> header = new HashMap<String, String>();
         header.put("Content-Type", "application/json");
         String body = "{\"notify\": false }";
         HttpResponse responseURLCode = APIrest.postRequest(URL, header, body);
         URLCodeResponse urlCode = gson.fromJson(responseURLCode.getBody().toString(), URLCodeResponse.class);
         String code = urlCode.details.registrationUrl;
+
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
 //        driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
@@ -81,7 +83,7 @@ public class ioSampleTest {
                 (By.id("android:id/button1"))).click();
         String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
         System.out.println("The response is: " + response);
-        Assert.assertEquals(response,"200", "Bad Response: " + response);
+        Assert.assertEquals(response, "200", "Bad Response: " + response);
     }
 
 
