@@ -15,6 +15,10 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
@@ -38,6 +42,25 @@ public class ioSampleTest {
         caps.setCapability("noReset", "false");
         driver = new AndroidDriver<MobileElement>(new URL("http://127.0.0.1:4723/wd/hub"), caps);
         wait = new WebDriverWait(driver, 10);
+
+        Connection c = null;
+        try {
+            c = DriverManager.getConnection("jdbc:postgresql://IP:5432/DATABASE","", "");
+            Statement stmt = c.createStatement();
+            String sql_1= "DELETE FROM mobile_token WHERE mobile_auth_device_id IN\n" +
+                    "(SELECT mobile_auth_device_id FROM public.mobile_auth_device WHERE\n" +
+                    "client_id IN (SELECT cli_id_client FROM client WHERE cli_shared_key = 'testing'))\n";
+            System.out.println("Opened database successfully, executing query: " + sql_1);
+            stmt.executeUpdate(sql_1);
+            String sql_2 = "DELETE FROM public.mobile_auth_device WHERE client_id IN\n" +
+                    "(SELECT cli_id_client FROM client WHERE cli_shared_key = '" + user + "')";
+            System.out.println("Opened database successfully, executing query: " + sql_2);
+            stmt.executeUpdate(sql_2);
+            stmt.close();
+            c.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 
@@ -72,7 +95,6 @@ public class ioSampleTest {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
-//        driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated
@@ -81,7 +103,8 @@ public class ioSampleTest {
                 (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys(code);
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("android:id/button1"))).click();
-        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
+        String response = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("/hierarchy/android.widget.Toast"))).getText();
         System.out.println("The response is: " + response);
         Assert.assertEquals(response, "200", "Bad Response: " + response);
     }
