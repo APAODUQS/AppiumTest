@@ -47,7 +47,7 @@ public class ioSampleTest {
         try {
             c = DriverManager.getConnection("jdbc:postgresql://IP:5432/DATABASE","", "");
             Statement stmt = c.createStatement();
-            String sql_1= "DELETE FROM mobile_token WHERE mobile_auth_device_id IN\n" +
+            String sql_1 = "DELETE FROM mobile_token WHERE mobile_auth_device_id IN\n" +
                     "(SELECT mobile_auth_device_id FROM public.mobile_auth_device WHERE\n" +
                     "client_id IN (SELECT cli_id_client FROM client WHERE cli_shared_key = 'testing'))\n";
             System.out.println("Opened database successfully, executing query: " + sql_1);
@@ -84,7 +84,7 @@ public class ioSampleTest {
     }
 
     @Test
-    public void secondTest() throws UnirestException {
+    public void secondTest() throws UnirestException, InterruptedException {
         String URL = "http://192.168.243.189:8081/mobile-auth-service/api/v1/clients/" + user + "/activation/codes";
         HashMap<String, String> header = new HashMap<String, String>();
         header.put("Content-Type", "application/json");
@@ -103,8 +103,9 @@ public class ioSampleTest {
                 (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys(code);
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("android:id/button1"))).click();
-        String response = wait.until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("/hierarchy/android.widget.Toast"))).getText();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.easysolutions.sdk.test:id/recycler"))).getText();
+        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
         System.out.println("The response is: " + response);
         Assert.assertEquals(response, "200", "Bad Response: " + response);
     }
