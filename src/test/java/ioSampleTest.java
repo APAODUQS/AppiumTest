@@ -65,7 +65,7 @@ public class ioSampleTest {
 
         Connection c = null;
         try {
-            c = DriverManager.getConnection("jdbc:postgresql://192.168.243.189:5432/detectidQA2", "detectid", "detectid");
+            c = DriverManager.getConnection("jdbc:postgresql://IP:5432/detectidQA2", "U", "P");
             Statement stmt = c.createStatement();
             String sql_1 = "DELETE FROM mobile_token WHERE mobile_auth_device_id IN\n" +
                     "(SELECT mobile_auth_device_id FROM public.mobile_auth_device WHERE\n" +
