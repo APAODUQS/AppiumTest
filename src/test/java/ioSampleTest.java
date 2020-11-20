@@ -8,6 +8,9 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -24,8 +27,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-import static java.lang.Thread.sleep;
-
 public class ioSampleTest {
 
     //    public AndroidDriver<MobileElement> driver;
@@ -41,27 +42,30 @@ public class ioSampleTest {
 //        caps.setCapability("udid", "emulator-5554");
 //        caps.setCapability("platformName", "Android");
 //        caps.setCapability("appPackage", "com.easysolutions.sdk.test");
-//        adb shell dumpsys package com.easysolutions.sdk.test | grep Activity
+////      adb shell dumpsys package com.easysolutions.sdk.test | grep Activity
 //        caps.setCapability("appActivity", ".SplashActivity");
-        caps.setCapability("deviceName", "QA - iPhone XR - 14.0.1");
-        caps.setCapability("udid", "00008020-000314E034D1002E");
+
+//        caps.setCapability("deviceName", "QA - iPhone XR - 14.0.1");
+        caps.setCapability("deviceName", "QA - iPhone X - 12.4.1");
+//        caps.setCapability("udid", "00008020-000314E034D1002E");
+        caps.setCapability("udid", "d1130e5eb308addc6aa9c509a6748a9709302dac");
         caps.setCapability("platformName", "iOS");
-        caps.setCapability("platformVersion", "14.0.1");
-        caps.setCapability("app", "./app/app.ipa");
+//        caps.setCapability("platformVersion", "14.0.1");
+        caps.setCapability("platformVersion", "12.4.1");
+        caps.setCapability("app", "/Users/angela.duquino/Documents/Idea/AppiumTest/app/app.ipa");
         caps.setCapability("automationName", "XCUITest");
         caps.setCapability("xcodeSigningId", "iPhone Developer");
         caps.setCapability("xcodeOrgId", "MBXZA6Z65J");
         caps.setCapability("bundleId", "com.easysolutions.did.implementation");
-        caps.setCapability("noReset", "true");
+        caps.setCapability("noReset", "false");
 //        driver = new AndroidDriver<MobileElement>(new URL("http://127.0.0.1:4723/wd/hub"), caps);
-        driver = new IOSDriver<IOSElement>(new URL("http://127.0.0.1:4724/wd/hub"), caps);
-        System.out.println("-------------------------------------");
+        driver = new IOSDriver<IOSElement>(new URL("http://127.0.0.1:4723/wd/hub"), caps);
         System.out.println("Capabilities are: " + driver.getCapabilities());
         wait = new WebDriverWait(driver, 10);
 
         Connection c = null;
         try {
-            c = DriverManager.getConnection("jdbc:postgresql://192.168.243.189:5432/detectid810", "detectid", "detectid");
+            c = DriverManager.getConnection("jdbc:postgresql://192.168.243.189:5432/detectidQA2", "detectid", "detectid");
             Statement stmt = c.createStatement();
             String sql_1 = "DELETE FROM mobile_token WHERE mobile_auth_device_id IN\n" +
                     "(SELECT mobile_auth_device_id FROM public.mobile_auth_device WHERE\n" +
@@ -91,11 +95,11 @@ public class ioSampleTest {
 
 //    @Test
 //    public void firstTest() {
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+////        wait.until(ExpectedConditions.visibilityOfElementLocated
+////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
 ////        driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+////        wait.until(ExpectedConditions.visibilityOfElementLocated
+////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
 //        wait.until(ExpectedConditions.visibilityOfElementLocated
 //                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
 //        wait.until(ExpectedConditions.visibilityOfElementLocated
@@ -111,10 +115,10 @@ public class ioSampleTest {
 //    @Test
 //    public void secondTest() throws UnirestException {
 //        String code = getCode();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+////        wait.until(ExpectedConditions.visibilityOfElementLocated
+////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+////        wait.until(ExpectedConditions.visibilityOfElementLocated
+////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
 //        wait.until(ExpectedConditions.visibilityOfElementLocated
 //                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
 //        wait.until(ExpectedConditions.visibilityOfElementLocated
@@ -131,9 +135,11 @@ public class ioSampleTest {
     @Test
     public void firstTest() {
         wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("Allow"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"URL\"]"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTextField"))).sendKeys("HOLA");
+                (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextField"))).sendKeys("HOLA");
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"Aceptar\"]"))).click();
         String response = driver.findElement(By.id("Error del sistema")).getText();
@@ -147,9 +153,12 @@ public class ioSampleTest {
     public void secondTest() throws UnirestException, InterruptedException {
         String code = getCode();
         wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("Allow"))).click();
+//     Alert alert = driver.switchto().alert - alert.accept();
+        wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"URL\"]"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTextField"))).sendKeys(code);
+                (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextField"))).sendKeys(code);
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"Aceptar\"]"))).click();
         String response = wait.until(ExpectedConditions.visibilityOfElementLocated
@@ -158,8 +167,20 @@ public class ioSampleTest {
         Assert.assertEquals(response, "Cuentas registradas", "Bad Response: " + response);
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("menu"))).click();
+//        TouchActions action = new TouchActions(driver);
+//        Dimension size = driver.manage().window().getSize();
+//        int startX = size.width / 2;
+//        int endY = (int) (size.height * .2);
+//        action.scroll(startX, endY);
+//        action.perform();
+        //https://appiumpro.com/editions/30-ios-specific-touch-action-methods
+        HashMap<String, String> scrollObject = new HashMap<String, String>();
+        scrollObject.put("direction", "down");
+        driver.executeScript("mobile:scroll", scrollObject);
+        driver.executeScript("mobile:scroll", scrollObject);
         wait.until(ExpectedConditions.visibilityOfElementLocated
-                (By.id("Clear Device"))).click();
+                (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeScrollView/XCUIElementTypeTable/XCUIElementTypeCell[29]/XCUIElementTypeTextView"))).click();
+//        deleteC, otp
     }
 
     @AfterMethod
