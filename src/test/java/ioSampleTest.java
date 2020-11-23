@@ -29,39 +29,44 @@ import java.util.HashMap;
 
 public class ioSampleTest {
 
-    //    public AndroidDriver<MobileElement> driver;
-    public IOSDriver<IOSElement> driver;
-    public WebDriverWait wait;
-    private final String user = "paoduq";
+    public AndroidDriver<MobileElement> driverAndroid;
+    public IOSDriver<IOSElement> driveriOS;
+    public WebDriverWait waitAndroid;
+    public WebDriverWait waitiOS;
+    private final String user = "aduquino";
     private final Gson gson = new Gson();
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
-        DesiredCapabilities caps = new DesiredCapabilities();
-//        caps.setCapability("deviceName", "Pixel 3 API 28");
-//        caps.setCapability("udid", "emulator-5554");
-//        caps.setCapability("platformName", "Android");
-//        caps.setCapability("appPackage", "com.easysolutions.sdk.test");
-////      adb shell dumpsys package com.easysolutions.sdk.test | grep Activity
-//        caps.setCapability("appActivity", ".SplashActivity");
+        DesiredCapabilities capsAndroid = new DesiredCapabilities();
+        DesiredCapabilities capsiOS = new DesiredCapabilities();
 
-//        caps.setCapability("deviceName", "QA - iPhone XR - 14.0.1");
-        caps.setCapability("deviceName", "QA - iPhone X - 12.4.1");
-//        caps.setCapability("udid", "00008020-000314E034D1002E");
-        caps.setCapability("udid", "d1130e5eb308addc6aa9c509a6748a9709302dac");
-        caps.setCapability("platformName", "iOS");
-//        caps.setCapability("platformVersion", "14.0.1");
-        caps.setCapability("platformVersion", "12.4.1");
-        caps.setCapability("app", "/Users/angela.duquino/Documents/Idea/AppiumTest/app/app.ipa");
-        caps.setCapability("automationName", "XCUITest");
-        caps.setCapability("xcodeSigningId", "iPhone Developer");
-        caps.setCapability("xcodeOrgId", "MBXZA6Z65J");
-        caps.setCapability("bundleId", "com.easysolutions.did.implementation");
-        caps.setCapability("noReset", "false");
-//        driver = new AndroidDriver<MobileElement>(new URL("http://127.0.0.1:4723/wd/hub"), caps);
-        driver = new IOSDriver<IOSElement>(new URL("http://127.0.0.1:4723/wd/hub"), caps);
-        System.out.println("Capabilities are: " + driver.getCapabilities());
-        wait = new WebDriverWait(driver, 10);
+        capsAndroid.setCapability("deviceName", "Pixel 3 API 28");
+        capsAndroid.setCapability("udid", "emulator-5554");
+        capsAndroid.setCapability("platformName", "Android");
+        capsAndroid.setCapability("appPackage", "com.easysolutions.sdk.test");
+        capsAndroid.setCapability("appActivity", ".SplashActivity");
+//        capsiOS.setCapability("deviceName", "QA - iPhone XR - 14.0.1");
+//        capsiOS.setCapability("udid", "00008020-000314E034D1002E");
+//        capsiOS.setCapability("platformVersion", "14.0.1");
+        capsiOS.setCapability("deviceName", "QA - iPhone X - 12.4.1");
+        capsiOS.setCapability("udid", "d1130e5eb308addc6aa9c509a6748a9709302dac");
+        capsiOS.setCapability("platformName", "iOS");
+        capsiOS.setCapability("platformVersion", "12.4.1");
+        capsiOS.setCapability("app", "/Users/angela.duquino/Documents/Idea/AppiumTest/app/app.ipa");
+        capsiOS.setCapability("automationName", "XCUITest");
+        capsiOS.setCapability("xcodeSigningId", "iPhone Developer");
+        capsiOS.setCapability("xcodeOrgId", "MBXZA6Z65J");
+        capsiOS.setCapability("bundleId", "com.easysolutions.did.implementation");
+        capsiOS.setCapability("noReset", "false");
+
+        driverAndroid = new AndroidDriver<MobileElement>(new URL("http://127.0.0.1:4723/wd/hub"), capsAndroid);
+        driveriOS = new IOSDriver<IOSElement>(new URL("http://127.0.0.1:4724/wd/hub"), capsiOS);
+        System.out.println("Capabilities Android are: " + driverAndroid.getCapabilities());
+        System.out.println("Capabilities iOS are: " + driverAndroid.getCapabilities());
+
+        waitAndroid = new WebDriverWait(driverAndroid, 10);
+        waitiOS = new WebDriverWait(driveriOS, 10);
 
         Connection c = null;
         try {
@@ -93,79 +98,79 @@ public class ioSampleTest {
         return urlCode.details.registrationUrl;
     }
 
-//    @Test
-//    public void firstTest() {
-////        wait.until(ExpectedConditions.visibilityOfElementLocated
-////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
-////        driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
-////        wait.until(ExpectedConditions.visibilityOfElementLocated
-////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys("HOLA");
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("android:id/button1"))).click();
-//        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
-////        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast[@text='400']")).getText();
-//        System.out.println("The response is: " + response);
-//        Assert.assertEquals(response, "500", "Bad Response: " + response);
-//    }
-//
-//    @Test
-//    public void secondTest() throws UnirestException {
-//        String code = getCode();
-////        wait.until(ExpectedConditions.visibilityOfElementLocated
-////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
-////        wait.until(ExpectedConditions.visibilityOfElementLocated
-////                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys(code);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("android:id/button1"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated
-//                (By.id("com.easysolutions.sdk.test:id/recycler"))).getText();
-//        String response = driver.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
-//        System.out.println("The response is: " + response);
-//        Assert.assertEquals(response, "200", "Bad Response: " + response);
-//    }
+    @Test
+    public void firstTestAndroid() {
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        driverAndroid.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys("HOLA");
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("android:id/button1"))).click();
+        String response = driverAndroid.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
+//        String response = driverAndroid.findElement(By.xpath("/hierarchy/android.widget.Toast[@text='400']")).getText();
+        System.out.println("The response is: " + response);
+        Assert.assertEquals(response, "500", "Bad Response: " + response);
+    }
 
     @Test
-    public void firstTest() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+    public void secondTestAndroid() throws UnirestException {
+        String code = getCode();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.android.packageinstaller:id/permission_allow_button"))).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.easysolutions.sdk.test:id/registroURL"))).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.EditText"))).sendKeys(code);
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("android:id/button1"))).click();
+        waitAndroid.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id("com.easysolutions.sdk.test:id/recycler"))).getText();
+        String response = driverAndroid.findElement(By.xpath("/hierarchy/android.widget.Toast")).getText();
+        System.out.println("The response is: " + response);
+        Assert.assertEquals(response, "200", "Bad Response: " + response);
+    }
+
+    @Test
+    public void firstTestiOS() {
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("Allow"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"URL\"]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextField"))).sendKeys("HOLA");
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"Aceptar\"]"))).click();
-        String response = driver.findElement(By.id("Error del sistema")).getText();
+        String response = driveriOS.findElement(By.id("Error del sistema")).getText();
         System.out.println("The response is: " + response);
         Assert.assertEquals(response, "Error del sistema", "Bad Response: " + response);
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("OK"))).click();
     }
 
     @Test
-    public void secondTest() throws UnirestException, InterruptedException {
+    public void secondTestiOS() throws UnirestException, InterruptedException {
         String code = getCode();
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("Allow"))).click();
 //     Alert alert = driver.switchto().alert - alert.accept();
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"URL\"]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextField"))).sendKeys(code);
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeButton[@name=\"Aceptar\"]"))).click();
-        String response = wait.until(ExpectedConditions.visibilityOfElementLocated
+        String response = waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("Cuentas registradas"))).getText();
         System.out.println("The response is: " + response);
         Assert.assertEquals(response, "Cuentas registradas", "Bad Response: " + response);
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("menu"))).click();
 //        TouchActions action = new TouchActions(driver);
 //        Dimension size = driver.manage().window().getSize();
@@ -176,15 +181,16 @@ public class ioSampleTest {
         //https://appiumpro.com/editions/30-ios-specific-touch-action-methods
         HashMap<String, String> scrollObject = new HashMap<String, String>();
         scrollObject.put("direction", "down");
-        driver.executeScript("mobile:scroll", scrollObject);
-        driver.executeScript("mobile:scroll", scrollObject);
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        driveriOS.executeScript("mobile:scroll", scrollObject);
+        driveriOS.executeScript("mobile:scroll", scrollObject);
+        waitiOS.until(ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//XCUIElementTypeApplication[@name=\"Easy Solutions Bank\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeScrollView/XCUIElementTypeTable/XCUIElementTypeCell[29]/XCUIElementTypeTextView"))).click();
 //        deleteC, otp
     }
 
     @AfterMethod
     public void teardown() {
-        driver.quit();
+        driverAndroid.quit();
+        driveriOS.quit();
     }
 }
