@@ -43,3 +43,8 @@ mvn test -Dcucumber.filter.tags="(@TAG_1 or @TAG_2) and (not @TAG_3)"
 
 ### Information about using tags
 https://cucumber.io/docs/cucumber/api/#tags
+
+
+### Information about Selenium Commands
+- https://www.selenium.dev/selenium-ide/docs/en/api/commands#click
+- https://ui.vision/rpa/docs/selenium-ide
