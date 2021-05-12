@@ -32,14 +32,14 @@ public class DriverConfig {
 //            caps.setCapability("automationName", "XCUITest");
 //            caps.setCapability("xcodeSigningId", "iPhone Developer");
 //            caps.setCapability("xcodeOrgId", "MBXZA6Z65J");
-//            caps.setCapability("bundleId", "com.easysolutions.did.implementation");
+//            caps.setCapability("bundleId", "com.appgate.authenticator");
             driver = new IOSDriver<MobileElement>(new URL(Constants.APPIUM_SERVER), caps);
         } else {
 //            caps.setCapability("deviceName", "Pixel 3 API 28");
 //            caps.setCapability("udid", "emulator-5554");
 //            caps.setCapability("platformName", "Android");
-//            caps.setCapability("appPackage", "com.easysolutions.sdk.test");
-//            caps.setCapability("appActivity", ".SplashActivity");
+//            caps.setCapability("appPackage", "com.cyxtera.authenticator.debug");
+//            caps.setCapability("appActivity", "net.easysol.authenticator.splash.SplashActivity");
 //            caps.setCapability("app", "./app/app.apk");
             driver = new AndroidDriver<MobileElement>(new URL(Constants.APPIUM_SERVER), caps);
         }
