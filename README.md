@@ -46,5 +46,5 @@ https://cucumber.io/docs/cucumber/api/#tags
 
 
 ### Information about Selenium Commands
-https://www.selenium.dev/selenium-ide/docs/en/api/commands#click
-https://ui.vision/rpa/docs/selenium-ide
+- https://www.selenium.dev/selenium-ide/docs/en/api/commands#click
+- https://ui.vision/rpa/docs/selenium-ide
